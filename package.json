@@ -1,0 +1,49 @@
+{
+  "name": "echo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ECHO - Enhancing Care and Health Outcomes",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint src",
+    "lintfix": "eslint src --fix",
+    "preview": "vite preview",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "@mui/x-charts": "^8.2.0",
+    "@mui/x-data-grid": "^8.2.0",
+    "@mui/x-date-pickers": "^8.2.0",
+    "@mui/x-tree-view": "^8.2.0",
+    "@react-router/dev": "^7.5.3",
+    "@react-router/node": "^7.5.3",
+    "@react-router/serve": "^7.5.3",
+    "@react-spring/web": "^9.7.5",
+    "dayjs": "^1.11.13",
+    "firebase": "^11.6.1",
+    "isbot": "^5",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router": "^7.5.3"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "latest",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "3.5.3",
+    "typescript": "latest",
+    "typescript-eslint": "^8.30.0",
+    "vite": "latest"
+  }
+}
