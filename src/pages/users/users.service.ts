@@ -4,6 +4,10 @@ import {
   Timestamp,
   getDoc,
   doc,
+  query,
+  wher,
+  where,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
@@ -33,4 +37,23 @@ export async function getUser(userId: string): Promise<User> {
     console.log("No such document!");
   }
   return {} as User;
+}
+
+export async function getJournalEntiresByUserId(
+  userId: string,
+): Promise<any[]> {
+  const querySnapshot = await getDocs(
+    query(
+      collection(db, "journalEntires"),
+      where("userID", "==", userId),
+      orderBy("date", "desc"),
+    ),
+  );
+  const data = querySnapshot.docs
+    .map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    .sort((a, b) => b.updatedAt.seconds - a.updatedAt.seconds);
+  return data;
 }
