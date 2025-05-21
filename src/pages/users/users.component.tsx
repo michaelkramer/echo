@@ -3,7 +3,7 @@ import { DataGrid, GridEventListener } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router";
-import { getUsers, User } from "./users.service";
+import { getUsers, User } from "../../services/users.service";
 
 export function clientLoader() {
   return getUsers();

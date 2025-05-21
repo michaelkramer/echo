@@ -4,12 +4,10 @@ import {
   Timestamp,
   getDoc,
   doc,
-  query,
-  wher,
-  where,
-  orderBy,
+  updateDoc,
+  deleteField,
 } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../firebase";
 
 export interface User {
   id: string;
@@ -17,6 +15,7 @@ export interface User {
   display_name: string;
   email: string;
   created_time: Timestamp;
+  role: "SuperAdmin" | "Admin" | "Clinician" | null;
 }
 
 export async function getUsers(): Promise<User[]> {
@@ -39,21 +38,19 @@ export async function getUser(userId: string): Promise<User> {
   return {} as User;
 }
 
-export async function getJournalEntiresByUserId(
+export async function setUserRole(
   userId: string,
-): Promise<any[]> {
-  const querySnapshot = await getDocs(
-    query(
-      collection(db, "journalEntires"),
-      where("userID", "==", userId),
-      orderBy("date", "desc"),
-    ),
-  );
-  const data = querySnapshot.docs
-    .map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }))
-    .sort((a, b) => b.updatedAt.seconds - a.updatedAt.seconds);
-  return data;
+  role: string,
+): Promise<string> {
+  try {
+    if (role === "Client") {
+      await updateDoc(doc(db, "Users", userId), { role: deleteField() });
+    } else {
+      await updateDoc(doc(db, "Users", userId), { role: role });
+    }
+  } catch (error) {
+    console.error("Error updating user role: ", error);
+    return "error";
+  }
+  return "success";
 }

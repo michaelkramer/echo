@@ -5,19 +5,19 @@ import { useAuth } from "../auth/useAuth";
 
 export function Logout() {
   const navigate = useNavigate();
-  const { user, setUser } = useAuth();
+  const { authUser, setAuthUser } = useAuth();
 
   const handleLogout = async () => {
     try {
       await fbAuth.signOut();
-      setUser(null);
+      setAuthUser(null);
       navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
 
-  if (!user) {
+  if (!authUser) {
     return <></>;
   }
 

@@ -8,19 +8,39 @@ import {
   timelineOppositeContentClasses,
   TimelineSeparator,
 } from "@mui/lab";
-import { Box, Container, Grid, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import dayjs from "dayjs";
-import { getJournalEntiresByUserId, getUser, User } from "./users.service";
+import { useSnackbar } from "notistack";
+import { useSubmit } from "react-router";
+import { useAuth } from "../../components/auth/useAuth";
+import { getJournalEntiresByUserId } from "../../services/journalEntires.service";
+import { getUser, setUserRole, User } from "../../services/users.service";
+
+interface JournalEntry {
+  id: string;
+  updatedAt: { seconds: number };
+  activityName: string;
+  journalValue: string;
+  // Add other fields as needed
+}
 
 interface UserData {
   user: User;
-  journalEntires: any[];
+  journalEntires: JournalEntry[];
 }
 
 export async function clientLoader({
   params,
 }: {
-  params: any;
+  params: { userId: string };
 }): Promise<UserData> {
   return {
     user: await getUser(params.userId),
@@ -28,14 +48,30 @@ export async function clientLoader({
   };
 }
 
-export default function component({
-  params,
-  loaderData,
-}: {
-  params: any;
-  loaderData: UserData;
-}) {
+export async function clientAction() {
+  return;
+}
+
+export default function component({ loaderData }: { loaderData: UserData }) {
   const { user, journalEntires } = loaderData;
+  const { enqueueSnackbar } = useSnackbar();
+  const { isSuperAdmin, isAdmin } = useAuth();
+  const submit = useSubmit();
+
+  const handleSetRole = async (event) => {
+    const role = event.currentTarget.textContent;
+    const result = await setUserRole(user.uid, role);
+    if (result === "success") {
+      enqueueSnackbar(`User role updated to ${role}`, {
+        variant: "success",
+      });
+    } else {
+      enqueueSnackbar("Error updating user role", {
+        variant: "error",
+      });
+    }
+    submit(null);
+  };
 
   return (
     <Container>
@@ -117,9 +153,41 @@ export default function component({
           </Paper>
         </Grid>
       </Grid>
-      {/* <Box sx={{ mt: 2 }}>
-        
-      </Box> */}
+      {user.role !== "SuperAdmin" && (isSuperAdmin || isAdmin) && (
+        <Box sx={{ mt: 2 }}>
+          <Typography color="text.secondary" sx={{ mt: 2 }}>
+            Set User Roles
+          </Typography>
+          <ButtonGroup variant="contained" aria-label="Basic button group">
+            {isSuperAdmin && (
+              <Button onClick={handleSetRole}>SuperAdmin</Button>
+            )}
+            <Button
+              onClick={handleSetRole}
+              variant={user.role === "Admin" ? "outlined" : "contained"}
+            >
+              Admin
+            </Button>
+            <Button
+              onClick={handleSetRole}
+              variant={user.role === "Clinician" ? "outlined" : "contained"}
+            >
+              Clinician
+            </Button>
+            <Button
+              onClick={handleSetRole}
+              variant={!user.role ? "outlined" : "contained"}
+            >
+              Client
+            </Button>
+          </ButtonGroup>
+        </Box>
+      )}
+      {user.role === "SuperAdmin" && (
+        <Typography color="text.secondary" sx={{ mt: 2 }}>
+          Super Admin users cannot be changed
+        </Typography>
+      )}
     </Container>
   );
 }

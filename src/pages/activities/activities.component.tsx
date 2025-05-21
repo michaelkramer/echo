@@ -1,37 +1,24 @@
 import { Box, Container, Paper, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridEventListener } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Activity, getActivities } from "./activities.service";
+import { useNavigate } from "react-router";
+import { Activity, getActivities } from "../../services/activities.service";
 
-export default function Activities() {
+export default function Component() {
+  const navigate = useNavigate();
   const [rows, setRows] = useState<Activity[]>([]);
   const columns = [
-    { field: "EXERCISE", headerName: "Exercise", flex: 1 },
-    { field: "Howdoesitwork", headerName: "How Does It Work", flex: 1 },
-    {
-      field: "HowtoUseit",
-      headerName: "How To Use It",
-      flex: 1,
-    },
-    {
-      field: "Whatsitfor",
-      headerName: "Whats It For",
-      flex: 1,
-    },
-    {
-      field: "WhentoUseit",
-      headerName: "When To Use It",
-      flex: 1,
-    },
+    { field: "title", headerName: "Title", flex: 1 },
     {
       field: "category",
       headerName: "Category",
       flex: 1,
     },
-    { field: "description", headerName: "Description", flex: 1 },
-    { field: "title", headerName: "Title", flex: 1 },
-    { field: "weight", headerName: "Weight", flex: 1 },
   ];
+
+  const handleRowClick: GridEventListener<"rowClick"> = (params) => {
+    navigate(`/activities/${params.row.id}`);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +42,7 @@ export default function Activities() {
         <DataGrid
           rows={rows}
           columns={columns}
+          onRowClick={handleRowClick}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }

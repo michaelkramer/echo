@@ -29,6 +29,7 @@
     "dayjs": "^1.11.13",
     "firebase": "^11.6.1",
     "isbot": "^5",
+    "notistack": "^3.0.2",
     "react": "latest",
     "react-dom": "latest",
     "react-router": "^7.5.3"

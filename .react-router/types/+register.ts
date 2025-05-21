@@ -10,6 +10,9 @@ type Params = {
   "/": {};
   "/home": {};
   "/activities": {};
+  "/activities/:activityId": {
+    "activityId": string;
+  };
   "/users": {};
   "/users/:userId": {
     "userId": string;

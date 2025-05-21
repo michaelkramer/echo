@@ -9,7 +9,11 @@ export default [
   layout("./layout/global-layout.tsx", [index("./pages/home.tsx")]),
   layout("./layout/main-layout.tsx", [
     route("home", "./pages/testLogin.tsx"),
-    route("activities", "./pages/activities/index.tsx"),
+    route("activities", "./pages/activities/activities.component.tsx"),
+    route(
+      "activities/:activityId",
+      "./pages/activities/activity.component.tsx",
+    ),
     route("users", "./pages/users/users.component.tsx"),
     route("users/:userId", "./pages/users/user.component.tsx"),
   ]),

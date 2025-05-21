@@ -1,6 +1,6 @@
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import Divider, { dividerClasses } from "@mui/material/Divider";
+import { dividerClasses } from "@mui/material/Divider";
 import { listClasses } from "@mui/material/List";
 import ListItemIcon, { listItemIconClasses } from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -23,9 +23,11 @@ export default function OptionsMenu(props: { uid: string }) {
   const open = Boolean(anchorEl);
 
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setAuthUser } = useAuth();
 
-  console.log("OptionsMenu", props.uid);
+  const { uid } = props;
+  console.log("OptionsMenu uid", uid);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,7 +38,7 @@ export default function OptionsMenu(props: { uid: string }) {
   const handleLogout = async () => {
     try {
       await fbAuth.signOut();
-      setUser(null);
+      setAuthUser(null);
       navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
@@ -72,12 +74,6 @@ export default function OptionsMenu(props: { uid: string }) {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>Add another account</MenuItem>
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
-        <Divider />
         <MenuItem
           onClick={handleLogout}
           sx={{

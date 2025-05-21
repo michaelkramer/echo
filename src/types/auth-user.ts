@@ -1,5 +1,6 @@
 export interface AuthUser {
-  displayName: string | null;
+  display_name: string | null;
   email: string | null;
   uid: string | null;
+  role: "SuperAdmin" | "Admin" | "Clinician" | null;
 }
