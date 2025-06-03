@@ -13,7 +13,7 @@ export default function Dashboard() {
       </div>
     );
   }
-
+  console.log("env", import.meta.env);
   return (
     <div className="flex flex-col items-center justify-center min-h-60 bg-gray-200">
       <div>
