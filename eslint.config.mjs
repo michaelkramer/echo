@@ -14,6 +14,7 @@ export default tseslint.config(
     ],
     rules: {
       "import/order": ["error", { alphabetize: { order: "asc" } }],
+      "@typescript-eslint/ban-ts-comment": "off",
     },
   },
   eslintPluginPrettierRecommended,

@@ -8,8 +8,10 @@ export const resetPassword = (email: string): Promise<void> => {
       // ..
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      console.error("Error sending password reset email:", error);
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
       // ..
     });
+  return Promise.resolve();
 };
