@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { redirect } from "react-router";
 import { Login } from "../components/login/login";
+import { ROUTES } from "../constant/routes";
 import { isAuth } from "../services/isAuth";
 
 export async function clientLoader() {
@@ -13,7 +14,7 @@ export async function clientLoader() {
   );
   const isLogged = await isAuth();
   if (isLogged) {
-    return redirect("/home");
+    return redirect(ROUTES.DASHBOARD);
   }
 }
 

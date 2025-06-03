@@ -12,7 +12,7 @@ export default function Layout(props: {
 }) {
   return (
     <AppTheme {...props} themeComponents={xThemeComponents}>
-      <CssBaseline enableColorScheme />
+      <CssBaseline />
       {props.children}
     </AppTheme>
   );

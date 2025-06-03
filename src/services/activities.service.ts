@@ -1,4 +1,10 @@
-import { getDocs, collection, getDoc, doc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  getDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 export interface Activity {
@@ -26,11 +32,23 @@ export async function getActivities(): Promise<Activity[]> {
 export async function getActivity(aid: string): Promise<Activity> {
   const querySnapshot = await getDoc(doc(db, "Activities", aid));
   if (querySnapshot.exists()) {
-    console.log("Document data:", querySnapshot.data());
     return querySnapshot.data() as Activity;
   } else {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
   return {} as Activity;
+}
+
+export async function updateActivity(
+  aid: string,
+  data: Activity,
+): Promise<string> {
+  try {
+    await updateDoc(doc(db, "Activities", aid), { ...data });
+  } catch (error) {
+    console.error("Error updating activity: ", error);
+    return "error";
+  }
+  return "success";
 }

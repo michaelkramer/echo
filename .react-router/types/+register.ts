@@ -8,14 +8,15 @@ declare module "react-router" {
 
 type Params = {
   "/": {};
-  "/home": {};
-  "/activities": {};
-  "/activities/:activityId": {
+  "/echo": {};
+  "/echo/dashboard": {};
+  "/echo/activities": {};
+  "/echo/activities/:activityId": {
     "activityId": string;
   };
-  "/users": {};
-  "/users/:userId": {
+  "/echo/users": {};
+  "/echo/users/:userId": {
     "userId": string;
   };
-  "/*?": {};
+  "/echo/*?": {};
 };

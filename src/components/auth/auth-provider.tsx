@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const fetchUser = async () => {
       if (authUser && authUser.uid) {
         const userData = await getUser(authUser.uid);
-        console.log("AuthUser", userData);
+        //console.log("AuthUser", userData);
         setUser(userData);
       }
     };

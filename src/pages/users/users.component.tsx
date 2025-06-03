@@ -3,6 +3,7 @@ import { DataGrid, GridEventListener } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router";
+import { ROUTES } from "../../constant/routes";
 import { getUsers, User } from "../../services/users.service";
 
 export function clientLoader() {
@@ -14,7 +15,7 @@ export default function Users({ loaderData }: { loaderData: User[] }) {
   const rows = loaderData as User[];
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    navigate(`/users/${params.row.id}`);
+    navigate(ROUTES.USER(params.row.id));
   };
 
   const columns = [

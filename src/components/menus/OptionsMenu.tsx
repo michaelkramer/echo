@@ -26,7 +26,7 @@ export default function OptionsMenu(props: { uid: string }) {
   const { setAuthUser } = useAuth();
 
   const { uid } = props;
-  console.log("OptionsMenu uid", uid);
+  // console.log("OptionsMenu uid", uid);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

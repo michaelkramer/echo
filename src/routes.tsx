@@ -3,26 +3,25 @@ import {
   route,
   index,
   layout,
+  prefix,
 } from "@react-router/dev/routes";
 
 export default [
-  layout("./layout/global-layout.tsx", [index("./pages/home.tsx")]),
-  layout("./layout/main-layout.tsx", [
-    route("home", "./pages/testLogin.tsx"),
-    route("activities", "./pages/activities/activities.component.tsx"),
-    route(
-      "activities/:activityId",
-      "./pages/activities/activity.component.tsx",
-    ),
-    route("users", "./pages/users/users.component.tsx"),
-    route("users/:userId", "./pages/users/user.component.tsx"),
+  ...prefix("/echo", [
+    // route("home", "./pages/home.tsx"),
+    layout("./layout/global-layout.tsx", [index("./pages/home.tsx")]),
+    layout("./layout/main-layout.tsx", [
+      route("dashboard", "./pages/dashboard.tsx"),
+      route("activities", "./pages/activities/activities.component.tsx"),
+      route(
+        "activities/:activityId",
+        "./pages/activities/activity.component.tsx",
+      ),
+      route("users", "./pages/users/users.component.tsx"),
+      route("users/:userId", "./pages/users/user.component.tsx"),
+    ]),
+
+    // * matches all URLs, the ? makes it optional so it will match / as well
+    route("*?", "catchall.tsx"),
   ]),
-
-  // layout("./layout/main-layout.tsx", [
-  //   index("./pages/home.tsx"),
-
-  // ]),
-
-  // * matches all URLs, the ? makes it optional so it will match / as well
-  route("*?", "catchall.tsx"),
 ] satisfies RouteConfig;

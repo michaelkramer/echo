@@ -1,12 +1,6 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import type { ThemeOptions } from "@mui/material/styles";
 import * as React from "react";
-import { dataDisplayCustomizations } from "./customizations/dataDisplay";
-import { feedbackCustomizations } from "./customizations/feedback";
-import { inputsCustomizations } from "./customizations/inputs";
-import { navigationCustomizations } from "./customizations/navigation";
-import { surfacesCustomizations } from "./customizations/surfaces";
-import { colorSchemes, typography, shadows, shape } from "./themePrimitives";
 
 interface AppThemeProps {
   children: React.ReactNode;
@@ -15,6 +9,24 @@ interface AppThemeProps {
    */
   disableCustomTheme?: boolean;
   themeComponents?: ThemeOptions["components"];
+}
+
+// Augment the palette to include a tertiary color
+declare module "@mui/material/styles" {
+  interface Palette {
+    tertiary: Palette["primary"];
+  }
+
+  interface PaletteOptions {
+    tertiary?: PaletteOptions["primary"];
+  }
+}
+
+// Update the Button's color options to include a tertiary option
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    tertiary: true;
+  }
 }
 
 export const themeOptions: ThemeOptions = {
@@ -26,6 +38,9 @@ export const themeOptions: ThemeOptions = {
       light: "#479ece",
     },
     secondary: {
+      main: "#479ece",
+    },
+    tertiary: {
       main: "#feda5e",
     },
     background: {

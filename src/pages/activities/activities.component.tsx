@@ -2,6 +2,7 @@ import { Box, Container, Paper, Typography } from "@mui/material";
 import { DataGrid, GridEventListener } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { ROUTES } from "../../constant/routes";
 import { Activity, getActivities } from "../../services/activities.service";
 
 export default function Component() {
@@ -17,7 +18,7 @@ export default function Component() {
   ];
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
-    navigate(`/activities/${params.row.id}`);
+    navigate(ROUTES.ACTIVITY(params.row.id));
   };
 
   useEffect(() => {
@@ -30,30 +31,30 @@ export default function Component() {
 
   return (
     <Container>
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-          Actvities
-        </Typography>
+      <Box sx={{ mt: 2 }}>
+        <Paper
+          elevation={3}
+          sx={{ padding: 2, margin: 0, background: "inherit", width: "100%" }}
+        >
+          <Typography variant="h5" component="div" sx={{ mb: 2 }}>
+            Actvities
+          </Typography>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            onRowClick={handleRowClick}
+            getRowClassName={(params) =>
+              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+            }
+            initialState={{
+              pagination: { paginationModel: { pageSize: 20 } },
+            }}
+            pageSizeOptions={[10, 20, 50]}
+            disableColumnResize
+            density="compact"
+          />
+        </Paper>
       </Box>
-      <Paper
-        elevation={3}
-        sx={{ padding: 2, margin: 0, background: "inherit", width: "100%" }}
-      >
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          onRowClick={handleRowClick}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          }
-          initialState={{
-            pagination: { paginationModel: { pageSize: 20 } },
-          }}
-          pageSizeOptions={[10, 20, 50]}
-          disableColumnResize
-          density="compact"
-        />
-      </Paper>
     </Container>
   );
 }

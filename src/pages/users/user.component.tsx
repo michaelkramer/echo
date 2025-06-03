@@ -22,7 +22,9 @@ import { useSnackbar } from "notistack";
 import { useSubmit } from "react-router";
 import { useAuth } from "../../components/auth/useAuth";
 import { getJournalEntiresByUserId } from "../../services/journalEntires.service";
+// import { getSliderEntiresByUserId } from "../../services/sliderEntires.service";
 import { getUser, setUserRole, User } from "../../services/users.service";
+import { SliderEntry } from "../../types/SliderEntry";
 
 interface JournalEntry {
   id: string;
@@ -35,6 +37,7 @@ interface JournalEntry {
 interface UserData {
   user: User;
   journalEntires: JournalEntry[];
+  sliderEntires?: SliderEntry[]; // Adjust type as needed
 }
 
 export async function clientLoader({
@@ -45,6 +48,7 @@ export async function clientLoader({
   return {
     user: await getUser(params.userId),
     journalEntires: await getJournalEntiresByUserId(params.userId),
+    sliderEntires: [], //await getSliderEntiresByUserId(params.userId),
   };
 }
 
@@ -53,10 +57,12 @@ export async function clientAction() {
 }
 
 export default function component({ loaderData }: { loaderData: UserData }) {
-  const { user, journalEntires } = loaderData;
+  const { user, journalEntires, sliderEntires } = loaderData;
   const { enqueueSnackbar } = useSnackbar();
   const { isSuperAdmin, isAdmin } = useAuth();
   const submit = useSubmit();
+
+  console.log("sliderEntires", sliderEntires);
 
   const handleSetRole = async (event) => {
     const role = event.currentTarget.textContent;

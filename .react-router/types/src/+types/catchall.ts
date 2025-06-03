@@ -11,7 +11,7 @@ export type Info = {
   parents: [Parent0],
   id: "catchall"
   file: "catchall.tsx"
-  path: "*?"
+  path: "/echo/*?"
   params: {} & { [key: string]: string | undefined }
   module: Module
   loaderData: T.CreateLoaderData<Module>

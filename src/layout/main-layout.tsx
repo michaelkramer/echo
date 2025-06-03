@@ -7,6 +7,7 @@ import { Outlet, useNavigate } from "react-router";
 import { AuthProvider } from "../components/auth/auth-provider";
 import AppBreadcrumbs from "../components/breadcrumbs/breadcrumbs";
 import SideMenu from "../components/menus/SideMenu";
+import { ROUTES } from "../constant/routes";
 import { fbAuth } from "../firebase";
 import Layout from "./layout";
 function Copyright() {
@@ -34,7 +35,7 @@ export default function MainLayout() {
     const unsubscribe = fbAuth.onAuthStateChanged((user) => {
       if (!user) {
         console.log("User is not logged in");
-        navigate("/");
+        navigate(ROUTES.LOGIN);
       }
     });
 

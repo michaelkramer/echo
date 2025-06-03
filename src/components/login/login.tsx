@@ -18,6 +18,7 @@ import {
 } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { ROUTES } from "../../constant/routes";
 import { fbAuth } from "../../firebase";
 import ForgotPassword from "../forgot-password/forgot-password";
 
@@ -72,7 +73,7 @@ export function Login() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(fbAuth, provider);
-      navigate("/testLogin");
+      navigate(ROUTES.DASHBOARD);
 
       //   createUserWithEmailAndPassword(
       //     fbAuth,
@@ -128,7 +129,7 @@ export function Login() {
     );
 
     console.log("User signed in:", userCred.user);
-    navigate("/home");
+    navigate(ROUTES.DASHBOARD);
   };
 
   const validateInputs = () => {

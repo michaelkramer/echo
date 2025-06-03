@@ -10,9 +10,13 @@ import Stack from "@mui/material/Stack";
 import { Link, useLocation } from "react-router";
 
 const mainListItems = [
-  { text: "Home", icon: <HomeRoundedIcon />, route: "/home" },
-  { text: "Users", icon: <PeopleRoundedIcon />, route: "/users" },
-  { text: "Activities", icon: <AssignmentRoundedIcon />, route: "/activities" },
+  { text: "Home", icon: <HomeRoundedIcon />, route: "/echo/dashboard" },
+  { text: "Users", icon: <PeopleRoundedIcon />, route: "/echo/users" },
+  {
+    text: "Activities",
+    icon: <AssignmentRoundedIcon />,
+    route: "/echo/activities",
+  },
 ];
 
 // const secondaryListItems = [

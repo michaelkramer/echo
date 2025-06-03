@@ -17,7 +17,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col items-center justify-center min-h-60 bg-gray-200">
       <div>
-        <div>Display Name: {authUser.displayName}</div>
+        <div>Display Name: {authUser.display_name}</div>
       </div>
       <div className="text-xl font-semibold mt-4">Dashboard</div>
       <Logout />

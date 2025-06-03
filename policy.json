@@ -1,0 +1,124 @@
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:1029447828231@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "group:firebase@flutterflow.io"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "user:MichaelRKramer@gmail.com"
+      ],
+      "role": "roles/datastore.user"
+    },
+    {
+      "members": [
+        "group:firebase@flutterflow.io",
+        "serviceAccount:1029447828231-compute@developer.gserviceaccount.com",
+        "serviceAccount:reassist-4n2m1t@appspot.gserviceaccount.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com",
+        "serviceAccount:service-1029447828231@gcp-sa-firebase.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebase.managementServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:firebase-adminsdk-l4il0@reassist-4n2m1t.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebase.sdkAdminServiceAgent"
+    },
+    {
+      "members": [
+        "user:MichaelRKramer@gmail.com"
+      ],
+      "role": "roles/firebase.viewer"
+    },
+    {
+      "members": [
+        "serviceAccount:firebase-adminsdk-l4il0@reassist-4n2m1t.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaseauth.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@gcp-sa-firebasestorage.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebasestorage.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-1029447828231@gcp-sa-firestore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:firebase-adminsdk-l4il0@reassist-4n2m1t.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountTokenCreator"
+    },
+    {
+      "members": [
+        "group:firebase@flutterflow.io"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "user:KrzysiakNick@gmail.com",
+        "user:stkrzysiak@gmail.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:firebase-adminsdk-l4il0@reassist-4n2m1t.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    }
+  ],
+  "etag": "BwY0ZWRhhXE=",
+  "version": 1
+}

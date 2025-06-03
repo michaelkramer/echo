@@ -5,16 +5,17 @@
   "type": "module",
   "description": "ECHO - Enhancing Care and Health Outcomes",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "react-router dev",
+    "build": "tsc -b && react-router build",
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
-    "preview": "vite preview",
+    "preview": "eact-router preview",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@google-analytics/data": "^5.1.0",
     "@mui/icons-material": "latest",
     "@mui/lab": "^7.0.0-beta.12",
     "@mui/material": "latest",

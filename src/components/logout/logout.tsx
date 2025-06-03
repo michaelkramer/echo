@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
+import { ROUTES } from "../../constant/routes";
 import { fbAuth } from "../../firebase";
 import { useAuth } from "../auth/useAuth";
 
@@ -11,7 +12,7 @@ export function Logout() {
     try {
       await fbAuth.signOut();
       setAuthUser(null);
-      navigate("/");
+      navigate(ROUTES.LOGIN);
     } catch (error) {
       console.error("Error logging out:", error);
     }
