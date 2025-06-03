@@ -38,6 +38,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
+        env:
+          VITE_FIREBASE_CONFIG: ${{ vars.VITE_FIREBASE_CONFIG }}
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
