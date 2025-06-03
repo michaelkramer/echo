@@ -39,7 +39,6 @@ export default function Root() {
 }
 
 export function HydrateFallback() {
-  console.log("env", import.meta.env);
   return <div>Loading...</div>;
 }
 
