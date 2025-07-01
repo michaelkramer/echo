@@ -74,24 +74,6 @@ export function Login() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(fbAuth, provider);
       navigate(ROUTES.DASHBOARD);
-
-      //   createUserWithEmailAndPassword(
-      //     fbAuth,
-      //     "michaelrkramer@gmail.com",
-      //     "Qwerty123!",
-      //   )
-      //     .then((userCredential) => {
-      //       // Signed up
-      //       const user = userCredential.user;
-      //       console.log("User signed up:", user);
-      //       // ...
-      //     })
-      //     .catch((error) => {
-      //       const errorCode = error.code;
-      //       const errorMessage = error.message;
-      //       console.error("Error signing up:", errorCode, errorMessage);
-      //       // ..
-      //     });
     } catch (err) {
       setError("Failed to login. Please try again.");
       console.error("Error signing in with Google:", err);
@@ -113,23 +95,38 @@ export function Login() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("handleSubmit");
     event.preventDefault();
     if (emailError || passwordError) {
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log("data", data.get("email"));
-    const email = data.get("email");
-    const password = data.get("password");
-    const userCred = await signInWithEmailAndPassword(
-      fbAuth,
-      email as string,
-      password as string,
-    );
+    try {
+      const data = new FormData(event.currentTarget);
+      console.log("data", data.get("email"));
+      const email = data.get("email");
+      const password = data.get("password");
+      const userCred = await signInWithEmailAndPassword(
+        fbAuth,
+        email as string,
+        password as string,
+      );
 
-    console.log("User signed in:", userCred.user);
-    navigate(ROUTES.DASHBOARD);
+      console.log("User signed in:", userCred.user);
+      // Reset errors
+      setEmailError(false);
+      setEmailErrorMessage("");
+      setPasswordError(false);
+      setPasswordErrorMessage("");
+
+      // Navigate to dashboard after successful login
+      navigate(ROUTES.DASHBOARD);
+    } catch (error) {
+      console.error("Error signing in:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    }
   };
 
   const validateInputs = () => {

@@ -8,14 +8,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
 import { Link, useLocation } from "react-router";
+import { ROUTES } from "../../constant/routes";
 
 const mainListItems = [
-  { text: "Home", icon: <HomeRoundedIcon />, route: "/echo/dashboard" },
-  { text: "Users", icon: <PeopleRoundedIcon />, route: "/echo/users" },
+  { text: "Home", icon: <HomeRoundedIcon />, route: ROUTES.DASHBOARD },
+  { text: "Users", icon: <PeopleRoundedIcon />, route: ROUTES.USERS },
   {
     text: "Activities",
     icon: <AssignmentRoundedIcon />,
-    route: "/echo/activities",
+    route: ROUTES.ACTIVITIES,
   },
 ];
 

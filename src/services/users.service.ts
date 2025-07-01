@@ -6,7 +6,12 @@ import {
   doc,
   updateDoc,
   deleteField,
+  setDoc,
+  where,
+  query,
+  documentId,
 } from "firebase/firestore";
+import { ROLES } from "../constant/roles";
 import { db } from "../firebase";
 
 export interface User {
@@ -19,7 +24,20 @@ export interface User {
 }
 
 export async function getUsers(): Promise<User[]> {
-  const querySnapshot = await getDocs(collection(db, "Users"));
+  const collectionRef = collection(db, "Users");
+  //const queries: QueryConstraint[] = [];
+  // if (filters) {
+  //   // Apply filters if provided
+  //   Object.entries(filters).forEach(([key, value]) => {
+  //     if (value === null) {
+  //       queries.push(where(key, "!=", null));
+  //     }
+  //     if (value !== undefined && value !== null) {
+  //       queries.push(where(key, "==", value));
+  //     }
+  //   });
+  // }
+  const querySnapshot = await getDocs(collectionRef);
   const data = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
@@ -42,8 +60,9 @@ export async function setUserRole(
   userId: string,
   role: string,
 ): Promise<string> {
+  console.log("setUserRole", userId, role);
   try {
-    if (role === "Client") {
+    if (role === ROLES.CLIENT) {
       await updateDoc(doc(db, "Users", userId), { role: deleteField() });
     } else {
       await updateDoc(doc(db, "Users", userId), { role: role });
@@ -53,4 +72,40 @@ export async function setUserRole(
     return "error";
   }
   return "success";
+}
+
+export async function createUser(user: User | null): Promise<string> {
+  if (!user || !user.uid) {
+    console.error("User or user.uid is null, cannot set user.");
+    return "error";
+  }
+  try {
+    await setDoc(doc(db, "Users", user.uid), {
+      display_name: user.display_name,
+      email: user.email,
+      created_time: Timestamp.now(),
+      uid: user.uid,
+    });
+    return "success";
+  } catch (error) {
+    console.error("Error setting user: ", error);
+    return "error";
+  }
+}
+
+export async function getUsersById(userIds: string[]): Promise<User[]> {
+  if (!userIds || userIds.length === 0) {
+    console.error("No user IDs provided.");
+    return [];
+  }
+  const users: User[] = [];
+  const userRef = collection(db, "Users");
+  const q = query(userRef, where(documentId(), "in", userIds));
+  const userSnapshot = await getDocs(q);
+  for (const docSnap of userSnapshot.docs) {
+    const user = docSnap.data() as User;
+    user.id = docSnap.id;
+    users.push(user);
+  }
+  return users;
 }

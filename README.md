@@ -1,10 +1,5 @@
 # ECHO - Enhancing Care and Health Outcomes
 
-## How to use
+## Temp location
 
-Install it and run:
-
-```bash
-npm install
-npm run dev
-```
+[Website](https://michaelkramer.github.io/echo/)

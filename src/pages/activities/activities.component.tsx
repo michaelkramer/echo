@@ -1,13 +1,16 @@
 import { Box, Container, Paper, Typography } from "@mui/material";
 import { DataGrid, GridEventListener } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { ROUTES } from "../../constant/routes";
 import { Activity, getActivities } from "../../services/activities.service";
 
-export default function Component() {
+export async function clientLoader() {
+  const data = await getActivities();
+  return data;
+}
+
+export default function Component({ loaderData }: { loaderData: Activity[] }) {
   const navigate = useNavigate();
-  const [rows, setRows] = useState<Activity[]>([]);
   const columns = [
     { field: "title", headerName: "Title", flex: 1 },
     {
@@ -21,14 +24,6 @@ export default function Component() {
     navigate(ROUTES.ACTIVITY(params.row.id));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getActivities();
-      setRows(data);
-    };
-    fetchData();
-  });
-
   return (
     <Container>
       <Box sx={{ mt: 2 }}>
@@ -40,7 +35,7 @@ export default function Component() {
             Actvities
           </Typography>
           <DataGrid
-            rows={rows}
+            rows={loaderData}
             columns={columns}
             onRowClick={handleRowClick}
             getRowClassName={(params) =>

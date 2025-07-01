@@ -19,6 +19,12 @@ export default [
       ),
       route("users", "./pages/users/users.component.tsx"),
       route("users/:userId", "./pages/users/user.component.tsx"),
+      route("users/create", "./pages/users/create-user.component.tsx"),
+      route("users/group/:userId", "./pages/users/group.component.tsx"),
+      route(
+        "users/group/:userId/assign",
+        "./pages/users/group-assign.component.tsx",
+      ),
     ]),
 
     // * matches all URLs, the ? makes it optional so it will match / as well

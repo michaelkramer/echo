@@ -3,7 +3,7 @@ import Container from "@mui/material/Container";
 import { redirect } from "react-router";
 import { Login } from "../components/login/login";
 import { ROUTES } from "../constant/routes";
-import { isAuth } from "../services/isAuth";
+import { isAuth } from "../services/auth.service";
 
 export async function clientLoader() {
   // mock slow response from firebase

@@ -17,13 +17,23 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { useSnackbar } from "notistack";
-import { useSubmit } from "react-router";
+import { Link, useSubmit } from "react-router";
 import { useAuth } from "../../components/auth/useAuth";
+import { ROLES } from "../../constant/roles";
+import { ROUTES } from "../../constant/routes";
 import { getJournalEntiresByUserId } from "../../services/journalEntires.service";
 // import { getSliderEntiresByUserId } from "../../services/sliderEntires.service";
-import { getUser, setUserRole, User } from "../../services/users.service";
+import { getSliderEntiresByUserId } from "../../services/sliderEntires.service";
+import { getUserGroup } from "../../services/userGroups.service";
+import {
+  getUser,
+  setUserRole,
+  User,
+  getUsersById,
+} from "../../services/users.service";
 import { SliderEntry } from "../../types/SliderEntry";
 
 interface JournalEntry {
@@ -37,7 +47,8 @@ interface JournalEntry {
 interface UserData {
   user: User;
   journalEntires: JournalEntry[];
-  sliderEntires?: SliderEntry[]; // Adjust type as needed
+  sliderEntires?: SliderEntry[];
+  userGroup?: User[];
 }
 
 export async function clientLoader({
@@ -48,7 +59,8 @@ export async function clientLoader({
   return {
     user: await getUser(params.userId),
     journalEntires: await getJournalEntiresByUserId(params.userId),
-    sliderEntires: [], //await getSliderEntiresByUserId(params.userId),
+    sliderEntires: await getSliderEntiresByUserId(params.userId),
+    userGroup: await getUsersById(await getUserGroup(params.userId)),
   };
 }
 
@@ -57,11 +69,12 @@ export async function clientAction() {
 }
 
 export default function component({ loaderData }: { loaderData: UserData }) {
-  const { user, journalEntires, sliderEntires } = loaderData;
+  const { user, journalEntires, sliderEntires, userGroup } = loaderData;
   const { enqueueSnackbar } = useSnackbar();
-  const { isSuperAdmin, isAdmin } = useAuth();
+  const { isSuperAdmin, isAdmin, isClinician } = useAuth();
   const submit = useSubmit();
-
+  console.log("isAdmin", isAdmin);
+  console.log("isClinician", isClinician);
   console.log("sliderEntires", sliderEntires);
 
   const handleSetRole = async (event) => {
@@ -78,6 +91,11 @@ export default function component({ loaderData }: { loaderData: UserData }) {
     }
     submit(null);
   };
+
+  const myUserGroupColumns = [
+    { field: "display_name", headerName: "Name", flex: 1, onclickable: true },
+    { field: "email", headerName: "Email", flex: 1 },
+  ];
 
   return (
     <Container>
@@ -158,38 +176,82 @@ export default function component({ loaderData }: { loaderData: UserData }) {
             </Timeline>
           </Paper>
         </Grid>
+        {(isSuperAdmin || isAdmin || isClinician) && (
+          <Grid size={12} sx={{ mb: (theme) => theme.spacing(2) }}>
+            <Paper
+              elevation={3}
+              sx={{
+                padding: 2,
+                marginTop: 2,
+                background: "inherit",
+                width: "100%",
+              }}
+            >
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid size="grow">
+                  <Typography variant="h5" component="div" sx={{ mb: 2 }}>
+                    Clients
+                  </Typography>
+                </Grid>
+                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    size="small"
+                    variant="text"
+                    component={Link}
+                    to={`${ROUTES.GROUP}/${user.uid}`}
+                  >
+                    Add Clients
+                  </Button>
+                </Grid>
+              </Grid>
+              <DataGrid
+                rows={userGroup}
+                columns={myUserGroupColumns}
+                getRowClassName={(params) =>
+                  params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+                }
+                initialState={{
+                  pagination: { paginationModel: { pageSize: 20 } },
+                }}
+                pageSizeOptions={[10, 20, 50]}
+                disableColumnResize
+                density="compact"
+              />
+            </Paper>
+          </Grid>
+        )}
       </Grid>
-      {user.role !== "SuperAdmin" && (isSuperAdmin || isAdmin) && (
+      {user.role !== ROLES.SUPER_ADMIN && (isSuperAdmin || isAdmin) && (
         <Box sx={{ mt: 2 }}>
           <Typography color="text.secondary" sx={{ mt: 2 }}>
             Set User Roles
           </Typography>
           <ButtonGroup variant="contained" aria-label="Basic button group">
             {isSuperAdmin && (
-              <Button onClick={handleSetRole}>SuperAdmin</Button>
+              <Button onClick={handleSetRole}>{ROLES.SUPER_ADMIN}</Button>
             )}
             <Button
               onClick={handleSetRole}
-              variant={user.role === "Admin" ? "outlined" : "contained"}
+              variant={user.role === ROLES.ADMIN ? "outlined" : "contained"}
             >
-              Admin
+              {ROLES.ADMIN}
             </Button>
             <Button
               onClick={handleSetRole}
-              variant={user.role === "Clinician" ? "outlined" : "contained"}
+              variant={user.role === ROLES.CLINICIAN ? "outlined" : "contained"}
             >
-              Clinician
+              {ROLES.CLINICIAN}
             </Button>
             <Button
               onClick={handleSetRole}
               variant={!user.role ? "outlined" : "contained"}
             >
-              Client
+              {ROLES.CLIENT}
             </Button>
           </ButtonGroup>
         </Box>
       )}
-      {user.role === "SuperAdmin" && (
+      {user.role === ROLES.SUPER_ADMIN && (
         <Typography color="text.secondary" sx={{ mt: 2 }}>
           Super Admin users cannot be changed
         </Typography>

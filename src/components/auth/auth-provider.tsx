@@ -1,5 +1,6 @@
 import { onAuthStateChanged, User as FbUser } from "firebase/auth";
 import { useState, useEffect, useMemo } from "react";
+import { ROLES } from "../../constant/roles";
 import { fbAuth } from "../../firebase";
 import { getUser, User } from "../../services/users.service";
 import { AuthUser } from "../../types/auth-user";
@@ -11,21 +12,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const isSuperAdmin = useMemo(() => {
     if (user && user.role) {
-      return user.role === "SuperAdmin";
+      return user.role === ROLES.SUPER_ADMIN;
     }
     return false;
   }, [user]);
 
   const isAdmin = useMemo(() => {
     if (user && user.role) {
-      return user.role === "Admin";
+      return user.role === ROLES.ADMIN;
     }
     return false;
   }, [user]);
 
   const isClinician = useMemo(() => {
     if (user && user.role) {
-      return user.role === "Clinician";
+      return user.role === ROLES.CLINICIAN;
     }
     return false;
   }, [user]);

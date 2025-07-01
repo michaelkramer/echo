@@ -21,6 +21,7 @@ export default function Users({ loaderData }: { loaderData: User[] }) {
   const columns = [
     { field: "display_name", headerName: "Name", flex: 1, onclickable: true },
     { field: "email", headerName: "Email", flex: 1 },
+    { field: "role", headerName: "Role", flex: 1 },
     {
       field: "created_time",
       headerName: "Start Date",

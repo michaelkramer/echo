@@ -1,5 +1,6 @@
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import { dividerClasses } from "@mui/material/Divider";
 import { listClasses } from "@mui/material/List";
 import ListItemIcon, { listItemIconClasses } from "@mui/material/ListItemIcon";
@@ -10,6 +11,7 @@ import { paperClasses } from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import * as React from "react";
 import { useNavigate } from "react-router";
+import { ROUTES } from "../../constant/routes";
 import { fbAuth } from "../../firebase";
 import { useAuth } from "../auth/useAuth";
 import MenuButton from "./MenuButton";
@@ -18,15 +20,12 @@ const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",
 });
 
-export default function OptionsMenu(props: { uid: string }) {
+export default function OptionsMenu(_props: { uid: string }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const navigate = useNavigate();
   const { setAuthUser } = useAuth();
-
-  const { uid } = props;
-  console.log("OptionsMenu uid", uid);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -75,6 +74,20 @@ export default function OptionsMenu(props: { uid: string }) {
         }}
       >
         <MenuItem
+          sx={{
+            [`& .${listItemIconClasses.root}`]: {
+              ml: "auto",
+              minWidth: 0,
+            },
+          }}
+          onClick={() => navigate(ROUTES.CREATE_USER)}
+        >
+          <ListItemText sx={{ marginRight: 1.5 }}>Add User</ListItemText>
+          <ListItemIcon>
+            <PersonAddRoundedIcon fontSize="small" />
+          </ListItemIcon>
+        </MenuItem>
+        <MenuItem
           onClick={handleLogout}
           sx={{
             [`& .${listItemIconClasses.root}`]: {
@@ -83,7 +96,7 @@ export default function OptionsMenu(props: { uid: string }) {
             },
           }}
         >
-          <ListItemText>Logout</ListItemText>
+          <ListItemText sx={{ marginRight: 1.5 }}>Logout</ListItemText>
           <ListItemIcon>
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
