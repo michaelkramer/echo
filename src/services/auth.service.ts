@@ -1,6 +1,12 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { fbAuth, secFbAuth } from "../firebase";
-import { createUser } from "./users.service";
+import { createUser, User } from "./users.service";
+
+export interface AuthUser {
+  email: string;
+  password: string;
+  displayName: string;
+}
 
 export const isAuth = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -11,11 +17,7 @@ export const isAuth = (): Promise<boolean> => {
   });
 };
 
-export const createAuthUser = async (user: {
-  email: string;
-  password: string;
-  displayName: string;
-}): Promise<string> => {
+export const createAuthUser = async (user: AuthUser): Promise<string> => {
   const { email, password, displayName } = user;
 
   try {
@@ -33,7 +35,7 @@ export const createAuthUser = async (user: {
       uid: userCred.uid,
       role: null,
     };
-    return await createUser(newUser);
+    return await createUser(newUser as User);
   } catch (error: any) {
     console.error("Error signing up:", error.code, error.message);
     return "error";

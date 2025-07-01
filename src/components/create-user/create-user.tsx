@@ -9,7 +9,7 @@ import {
   Dialog,
 } from "@mui/material";
 import React from "react";
-import { createAuthUser } from "../../services/auth.service";
+import { createAuthUser, AuthUser } from "../../services/auth.service";
 
 export function CreateUser() {
   const [emailError, setEmailError] = React.useState(false);
@@ -29,7 +29,7 @@ export function CreateUser() {
       email: data.get("email")?.toString(),
       password: data.get("password")?.toString(),
     };
-    const userCred = await createAuthUser(newUser);
+    const userCred = await createAuthUser(newUser as AuthUser);
 
     console.log("User created:", userCred);
   };
