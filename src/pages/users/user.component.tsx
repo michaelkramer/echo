@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import { useSnackbar } from "notistack";
 import { Link, useSubmit } from "react-router";
 import { useAuth } from "../../components/auth/useAuth";
+import { UserProfile } from "../../components/user/user-profile";
 import { ROLES } from "../../constant/roles";
 import { ROUTES } from "../../constant/routes";
 import { getJournalEntiresByUserId } from "../../services/journalEntires.service";
@@ -33,8 +34,10 @@ import {
   setUserRole,
   User,
   getUsersById,
+  updateUser,
 } from "../../services/users.service";
 import { SliderEntry } from "../../types/SliderEntry";
+import { Route } from "../../types/root";
 
 interface JournalEntry {
   id: string;
@@ -64,8 +67,24 @@ export async function clientLoader({
   };
 }
 
-export async function clientAction() {
-  return;
+export async function clientAction({
+  params,
+  request,
+}: Route.ClientActionArgs) {
+  const formData = await request.formData();
+
+  const formEntries = Object.fromEntries(formData.entries() as any);
+  formEntries.uid = params.userId ?? "";
+  formEntries.id = params.userId ?? "";
+  formEntries.address = {
+    street: formEntries.address_street ?? "",
+    city: formEntries.address_city ?? "",
+    state: formEntries.address_state ?? "",
+    zip: formEntries.address_zip ?? "",
+  };
+  console.log("formData Action", formEntries);
+  await updateUser(formEntries as User);
+  return { success: true, message: "User Updated" };
 }
 
 export default function component({ loaderData }: { loaderData: UserData }) {
@@ -92,6 +111,12 @@ export default function component({ loaderData }: { loaderData: UserData }) {
     submit(null);
   };
 
+  const handleEditProfile = (data) => {
+    submit(data, {
+      method: "post",
+    });
+  };
+
   const myUserGroupColumns = [
     { field: "display_name", headerName: "Name", flex: 1, onclickable: true },
     { field: "email", headerName: "Email", flex: 1 },
@@ -106,23 +131,7 @@ export default function component({ loaderData }: { loaderData: UserData }) {
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
         <Grid size={4} sx={{ mb: (theme) => theme.spacing(2) }}>
-          <Paper
-            elevation={3}
-            sx={{
-              padding: 2,
-              marginTop: 2,
-              background: "inherit",
-              width: "100%",
-            }}
-          >
-            <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-              {user.display_name}
-            </Typography>
-            <div>{user.email}</div>
-            <div>
-              {dayjs.unix(user.created_time.seconds).format("MM/DD/YYYY")}
-            </div>
-          </Paper>
+          <UserProfile user={user} onEdit={handleEditProfile} />
         </Grid>
         <Grid size={8} sx={{ mb: (theme) => theme.spacing(2) }}>
           <Paper

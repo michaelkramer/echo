@@ -36,7 +36,7 @@ export async function getUserGroup(userId: string): Promise<string[]> {
 export async function setUserGroup(
   userId: string,
   client_userIds: string[],
-): Promise<string> {
+): Promise<{ success: boolean; message: string }> {
   console.log("setUserGroup", userId, client_userIds);
   try {
     const deleteResponse = await deleteUserGroup(userId);
@@ -55,10 +55,16 @@ export async function setUserGroup(
       batch.set(doc(collection(db, "UserGroups")), userGroupData);
     });
     await batch.commit();
-    return "success";
-  } catch (error) {
+    return {
+      success: true,
+      message: "Clients assigned successfully.",
+    };
+  } catch (error: any) {
     console.error("Error setting user group:", error);
-    return Promise.reject("error");
+    return {
+      success: false,
+      message: error.message || "An error occurred while setting user group.",
+    };
   }
 }
 

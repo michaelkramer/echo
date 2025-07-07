@@ -1,11 +1,20 @@
-import { Container, Box, Paper, Typography, Button, Grid } from "@mui/material";
+import {
+  Container,
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Grid,
+  Link,
+} from "@mui/material";
 import { DataGrid, GridRowSelectionModel } from "@mui/x-data-grid";
-import { useState } from "react";
-import { useSubmit } from "react-router";
+import { useSnackbar } from "notistack";
+import { useState, useEffect } from "react";
+import { useSubmit, useActionData, Link as RouterLink } from "react-router";
+import { ROUTES } from "../../constant/routes";
 import { setUserGroup, getUserGroup } from "../../services/userGroups.service";
 import { getUser, getUsers, User } from "../../services/users.service";
 import { Route } from "../../types/root";
-
 interface GroupData {
   clinician: User;
   users: User[];
@@ -17,15 +26,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   const userId = formData.get("userId");
   const clientUserIds = formData.get("clientUserIds");
   if (!userId) {
-    console.error("userId is missing");
-    return;
+    return { success: false, message: "UserId is missing" };
   }
-  await setUserGroup(
+  const response = await setUserGroup(
     userId.toString(),
     clientUserIds ? clientUserIds.toString().split(",") : [],
   );
-  console.log("userId", userId, "clientUserIds", clientUserIds);
-  return;
+  return response;
 }
 
 export async function clientLoader({
@@ -44,6 +51,8 @@ export async function clientLoader({
 export default function Group({ loaderData }: { loaderData: GroupData }) {
   const { clinician, users, clients } = loaderData;
   const submit = useSubmit();
+  const actionData = useActionData();
+  const { enqueueSnackbar } = useSnackbar();
   const [selection, setSelection] = useState<string[]>(clients || []);
   const [rowSelectionModel, setRowSelectionModel] =
     useState<GridRowSelectionModel>({ type: "include", ids: new Set(clients) });
@@ -61,6 +70,16 @@ export default function Group({ loaderData }: { loaderData: GroupData }) {
       },
     );
   };
+
+  useEffect(() => {
+    if (actionData) {
+      if (actionData.success) {
+        enqueueSnackbar(actionData.message, { variant: "success" });
+      } else {
+        enqueueSnackbar(actionData.message, { variant: "error" });
+      }
+    }
+  }, [actionData, enqueueSnackbar]);
 
   const columns = [
     { field: "display_name", headerName: "Name", flex: 1, onclickable: true },
@@ -82,7 +101,14 @@ export default function Group({ loaderData }: { loaderData: GroupData }) {
           <Grid container spacing={2} sx={{ mb: 2 }}>
             <Grid size="grow">
               <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-                Assign Clients to {clinician.display_name}
+                Assign Clients to{" "}
+                <Link
+                  underline="none"
+                  component={RouterLink}
+                  to={`${ROUTES.USER(clinician.uid)}`}
+                >
+                  {clinician.display_name}
+                </Link>
               </Typography>
             </Grid>
             <Grid size={2} sx={{ display: "flex", justifyContent: "flex-end" }}>

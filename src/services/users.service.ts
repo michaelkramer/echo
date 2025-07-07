@@ -20,6 +20,9 @@ export interface User {
   display_name: string;
   email: string;
   created_time: Timestamp;
+  updated_time?: Timestamp;
+  phone_number?: string;
+  address?: { street: string; city: string; state: string; zip: string };
   role: "SuperAdmin" | "Admin" | "Clinician" | null;
 }
 
@@ -84,11 +87,33 @@ export async function createUser(user: User | null): Promise<string> {
       display_name: user.display_name,
       email: user.email,
       created_time: Timestamp.now(),
+      updated_time: Timestamp.now(),
       uid: user.uid,
     });
     return "success";
   } catch (error) {
     console.error("Error setting user: ", error);
+    return "error";
+  }
+}
+
+export async function updateUser(user: User): Promise<string> {
+  if (!user || !user.uid) {
+    console.error("User or user.uid is null, cannot update user.");
+    return "error";
+  }
+  try {
+    const userRef = doc(db, "Users", user.uid);
+    await updateDoc(userRef, {
+      // can't update uid and email
+      display_name: user.display_name,
+      phone_number: user.phone_number,
+      address: user.address,
+      updated_time: Timestamp.now(),
+    });
+    return "success";
+  } catch (error) {
+    console.error("Error updating user: ", error);
     return "error";
   }
 }

@@ -7,6 +7,7 @@ import {
   isRouteErrorResponse,
 } from "react-router";
 import "./index.css";
+import favIcon from "./assets/favicon.ico";
 import { Route } from "./types/root";
 import { ENV } from "./utilities/env";
 
@@ -17,6 +18,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>ECHO - Enhancing Care and Health Outcomes</title>
+        <link rel="icon" href={favIcon} />
         <Meta />
         <Links />
       </head>

@@ -33,7 +33,6 @@ export default function Dashboard() {
               <div>Display Name: {authUser.display_name}</div>
             </div>
             <div className="text-xl font-semibold mt-4">Dashboard</div>
-            <div>{JSON.stringify(ENV)}</div>
             <Logout />
           </div>
         </Paper>
