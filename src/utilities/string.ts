@@ -1,4 +1,4 @@
-export const titleCase = (s) =>
-  s.replace(/^_*(.)|_+(.)/g, (s, c, d) =>
+export const titleCase = (s: string) =>
+  s.replace(/^_*(.)|_+(.)/g, (_s, c, d) =>
     c ? c.toUpperCase() : " " + d.toUpperCase(),
   );

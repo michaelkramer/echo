@@ -2,7 +2,6 @@
 import { Box, Container, Paper } from "@mui/material";
 import { useAuth } from "../components/auth/useAuth";
 import { Logout } from "../components/logout/logout";
-import { ENV } from "../utilities/env";
 
 export default function Dashboard() {
   const { authUser } = useAuth();
