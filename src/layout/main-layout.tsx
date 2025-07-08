@@ -34,7 +34,7 @@ export default function MainLayout() {
   useEffect(() => {
     const unsubscribe = fbAuth.onAuthStateChanged((user) => {
       if (!user) {
-        console.log("User is not logged in");
+        console.warn("User is not logged in");
         navigate(ROUTES.LOGIN);
       }
     });

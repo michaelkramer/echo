@@ -24,13 +24,11 @@ export default function CreateUser() {
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("handleSubmit");
     event.preventDefault();
     if (emailError || passwordError) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log("data", data.get("email"));
 
     const email = data.get("email");
     const password = data.get("password");

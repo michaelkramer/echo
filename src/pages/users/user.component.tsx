@@ -20,7 +20,8 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { useSnackbar } from "notistack";
-import { Link, useSubmit } from "react-router";
+import { useEffect } from "react";
+import { Link, useSubmit, useActionData } from "react-router";
 import { useAuth } from "../../components/auth/useAuth";
 import { UserProfile } from "../../components/user/user-profile";
 import { ROLES } from "../../constant/roles";
@@ -72,28 +73,29 @@ export async function clientAction({
   request,
 }: Route.ClientActionArgs) {
   const formData = await request.formData();
-
-  const formEntries = Object.fromEntries(formData.entries() as any);
-  formEntries.uid = params.userId ?? "";
-  formEntries.id = params.userId ?? "";
-  formEntries.address = {
-    street: formEntries.address_street ?? "",
-    city: formEntries.address_city ?? "",
-    state: formEntries.address_state ?? "",
-    zip: formEntries.address_zip ?? "",
-  };
-  console.log("formData Action", formEntries);
-  await updateUser(formEntries as User);
-  return { success: true, message: "User Updated" };
+  try {
+    const formEntries = Object.fromEntries(formData.entries() as any);
+    formEntries.uid = params.userId ?? "";
+    formEntries.id = params.userId ?? "";
+    formEntries.address = {
+      street: formEntries.address_street ?? "",
+      city: formEntries.address_city ?? "",
+      state: formEntries.address_state ?? "",
+      zip: formEntries.address_zip ?? "",
+    };
+    return await updateUser(formEntries as User);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return { success: false, message: "Error updating user" };
+  }
 }
 
 export default function component({ loaderData }: { loaderData: UserData }) {
   const { user, journalEntires, sliderEntires, userGroup } = loaderData;
+  const actionData = useActionData();
   const { enqueueSnackbar } = useSnackbar();
   const { isSuperAdmin, isAdmin, isClinician } = useAuth();
   const submit = useSubmit();
-  console.log("isAdmin", isAdmin);
-  console.log("isClinician", isClinician);
   console.log("sliderEntires", sliderEntires);
 
   const handleSetRole = async (event) => {
@@ -116,6 +118,16 @@ export default function component({ loaderData }: { loaderData: UserData }) {
       method: "post",
     });
   };
+
+  useEffect(() => {
+    if (actionData) {
+      if (actionData.success) {
+        enqueueSnackbar(actionData.message, { variant: "success" });
+      } else {
+        enqueueSnackbar(actionData.message, { variant: "error" });
+      }
+    }
+  }, [actionData, enqueueSnackbar]);
 
   const myUserGroupColumns = [
     { field: "display_name", headerName: "Name", flex: 1, onclickable: true },
@@ -185,50 +197,52 @@ export default function component({ loaderData }: { loaderData: UserData }) {
             </Timeline>
           </Paper>
         </Grid>
-        {(isSuperAdmin || isAdmin || isClinician) && (
-          <Grid size={12} sx={{ mb: (theme) => theme.spacing(2) }}>
-            <Paper
-              elevation={3}
-              sx={{
-                padding: 2,
-                marginTop: 2,
-                background: "inherit",
-                width: "100%",
-              }}
-            >
-              <Grid container spacing={2} sx={{ mb: 2 }}>
-                <Grid size="grow">
-                  <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-                    Clients
-                  </Typography>
-                </Grid>
-                <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button
-                    size="small"
-                    variant="text"
-                    component={Link}
-                    to={`${ROUTES.GROUP}/${user.uid}`}
-                  >
-                    Add Clients
-                  </Button>
-                </Grid>
-              </Grid>
-              <DataGrid
-                rows={userGroup}
-                columns={myUserGroupColumns}
-                getRowClassName={(params) =>
-                  params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-                }
-                initialState={{
-                  pagination: { paginationModel: { pageSize: 20 } },
+        {user.role != undefined &&
+          user.role != null &&
+          (isSuperAdmin || isAdmin || isClinician) && (
+            <Grid size={12} sx={{ mb: (theme) => theme.spacing(2) }}>
+              <Paper
+                elevation={3}
+                sx={{
+                  padding: 2,
+                  marginTop: 2,
+                  background: "inherit",
+                  width: "100%",
                 }}
-                pageSizeOptions={[10, 20, 50]}
-                disableColumnResize
-                density="compact"
-              />
-            </Paper>
-          </Grid>
-        )}
+              >
+                <Grid container spacing={2} sx={{ mb: 2 }}>
+                  <Grid size="grow">
+                    <Typography variant="h5" component="div" sx={{ mb: 2 }}>
+                      Clients
+                    </Typography>
+                  </Grid>
+                  <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      size="small"
+                      variant="text"
+                      component={Link}
+                      to={`${ROUTES.GROUP}/${user.uid}`}
+                    >
+                      Add Clients
+                    </Button>
+                  </Grid>
+                </Grid>
+                <DataGrid
+                  rows={userGroup}
+                  columns={myUserGroupColumns}
+                  getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+                  }
+                  initialState={{
+                    pagination: { paginationModel: { pageSize: 20 } },
+                  }}
+                  pageSizeOptions={[10, 20, 50]}
+                  disableColumnResize
+                  density="compact"
+                />
+              </Paper>
+            </Grid>
+          )}
       </Grid>
       {user.role !== ROLES.SUPER_ADMIN && (isSuperAdmin || isAdmin) && (
         <Box sx={{ mt: 2 }}>

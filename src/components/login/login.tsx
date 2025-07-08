@@ -101,7 +101,6 @@ export function Login() {
     }
     try {
       const data = new FormData(event.currentTarget);
-      console.log("data", data.get("email"));
       const email = data.get("email");
       const password = data.get("password");
       const userCred = await signInWithEmailAndPassword(

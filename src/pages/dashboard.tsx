@@ -14,7 +14,7 @@ export default function Dashboard() {
       </div>
     );
   }
-  console.log("env", import.meta.env);
+  // console.log("env", import.meta.env);
   return (
     <Container>
       <Box sx={{ mt: 2 }}>

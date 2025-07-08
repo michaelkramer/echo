@@ -49,15 +49,7 @@ export function UserProfile({ user, onEdit }: UserProfileProps) {
     setEditProfile(!editProfile);
     if (onEdit) {
       event.preventDefault();
-      const formData = new FormData(event.currentTarget);
-      for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-      console.log(
-        "form:",
-        JSON.stringify(Object.fromEntries(formData.entries())),
-      );
-      onEdit(formData);
+      onEdit(new FormData(event.currentTarget));
     }
   };
 

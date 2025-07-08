@@ -59,7 +59,6 @@ export default function Group({ loaderData }: { loaderData: GroupData }) {
 
   const handleAssign = async () => {
     // Handle the assign action here
-    console.log("handleAssign", JSON.stringify(selection));
     await submit(
       {
         userId: clinician.uid,

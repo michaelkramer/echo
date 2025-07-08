@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { ROLES } from "../constant/roles";
 import { db } from "../firebase";
+import { ResponseType } from "../types/response-type";
 
 export interface User {
   id: string;
@@ -97,10 +98,12 @@ export async function createUser(user: User | null): Promise<string> {
   }
 }
 
-export async function updateUser(user: User): Promise<string> {
+export async function updateUser(user: User): Promise<ResponseType> {
   if (!user || !user.uid) {
-    console.error("User or user.uid is null, cannot update user.");
-    return "error";
+    return {
+      success: false,
+      message: "User or user.uid is null, cannot update user.",
+    };
   }
   try {
     const userRef = doc(db, "Users", user.uid);
@@ -111,10 +114,12 @@ export async function updateUser(user: User): Promise<string> {
       address: user.address,
       updated_time: Timestamp.now(),
     });
-    return "success";
-  } catch (error) {
-    console.error("Error updating user: ", error);
-    return "error";
+    return { success: true, message: "User updated successfully." };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "An error occurred while updating user.",
+    };
   }
 }
 

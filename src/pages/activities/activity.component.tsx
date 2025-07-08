@@ -37,9 +37,10 @@ export async function clientAction({
     for (const [key, value] of formData.entries()) {
       data[key] = value;
     }
-    console.log("data", data);
+    // console.log("data", data);
     const response = await updateActivity(activityId, data as Activity);
-    console.log("data", response);
+    // console.log("data", response);
+    return response;
   }
 }
 
