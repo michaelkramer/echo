@@ -28,6 +28,7 @@ function TextField({
   value: string;
   label?: string;
 }) {
+  const idTitle = id.replace(/address_/i, "");
   return (
     <MuiTextField
       id={id}
@@ -35,7 +36,7 @@ function TextField({
       defaultValue={value}
       size="small"
       variant="standard"
-      label={label ?? titleCase(id)}
+      label={label ?? titleCase(idTitle)}
       type={type}
       fullWidth
     />
@@ -67,7 +68,7 @@ export function UserProfile({ user, onEdit }: UserProfileProps) {
         width: "100%",
       }}
     >
-      <Grid container>
+      <Grid container spacing={editProfile ? 2 : 0}>
         <Grid size="grow">
           {editProfile ? (
             <TextField
@@ -99,20 +100,19 @@ export function UserProfile({ user, onEdit }: UserProfileProps) {
             )}
           </Grid>
         )}
-      </Grid>
-      {editFields.map((field) => (
-        <React.Fragment key={field}>
-          {editProfile ? (
-            <Grid size={12}>
+
+        {editFields.map((field) => (
+          <Grid size={12} key={field}>
+            {editProfile ? (
               <TextField id={field} type="text" value={user[field]} />
-            </Grid>
-          ) : (
-            <Grid size={12}>{user[field]}</Grid>
-          )}
-        </React.Fragment>
-      ))}
+            ) : (
+              user[field]
+            )}
+          </Grid>
+        ))}
+      </Grid>
       {editProfile ? (
-        <Grid container>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid size={12}>
             <TextField
               id="address_street"
@@ -154,7 +154,7 @@ export function UserProfile({ user, onEdit }: UserProfileProps) {
         )
       )}
       {!editProfile && (
-        <>
+        <Grid container spacing={editProfile ? 2 : 0}>
           <Grid size={12}>
             <Typography variant="body2">
               Created:{" "}
@@ -169,7 +169,7 @@ export function UserProfile({ user, onEdit }: UserProfileProps) {
               </Typography>
             </Grid>
           )}
-        </>
+        </Grid>
       )}
     </Paper>
   );
