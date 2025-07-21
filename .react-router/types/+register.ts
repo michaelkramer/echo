@@ -8,22 +8,21 @@ declare module "react-router" {
 
 type Params = {
   "/": {};
-  "/echo": {};
-  "/echo/dashboard": {};
-  "/echo/activities": {};
-  "/echo/activities/:activityId": {
+  "/": {};
+  "/dashboard": {};
+  "/activities": {};
+  "/activities/:activityId": {
     "activityId": string;
   };
-  "/echo/users": {};
-  "/echo/users/:userId": {
+  "/users": {};
+  "/users/:userId": {
     "userId": string;
   };
-  "/echo/users/create": {};
-  "/echo/users/group/:userId": {
+  "/users/create": {};
+  "/users/group/:userId": {
     "userId": string;
   };
-  "/echo/users/group/:userId/assign": {
+  "/users/group/:userId/assign": {
     "userId": string;
   };
-  "/echo/*?": {};
 };

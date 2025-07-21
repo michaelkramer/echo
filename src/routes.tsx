@@ -7,7 +7,7 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  ...prefix("/echo", [
+  ...prefix("/", [
     // route("home", "./pages/home.tsx"),
     layout("./layout/global-layout.tsx", [index("./pages/home.tsx")]),
     layout("./layout/main-layout.tsx", [
@@ -28,6 +28,6 @@ export default [
     ]),
 
     // * matches all URLs, the ? makes it optional so it will match / as well
-    route("*?", "catchall.tsx"),
+    // route("*?", "catchall.tsx"),
   ]),
 ] satisfies RouteConfig;

@@ -6,6 +6,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { ResponseType } from "../types/response-type";
 
 export interface Activity {
   id: string;
@@ -43,12 +44,15 @@ export async function getActivity(aid: string): Promise<Activity> {
 export async function updateActivity(
   aid: string,
   data: Activity,
-): Promise<string> {
+): Promise<ResponseType> {
   try {
     await updateDoc(doc(db, "Activities", aid), { ...data });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating activity: ", error);
-    return "error";
+    return {
+      success: false,
+      message: error.message || "Error updating activity",
+    };
   }
-  return "success";
+  return { success: true, message: "Activity updated successfully" };
 }

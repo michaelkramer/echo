@@ -47,6 +47,11 @@ export default function Component({ loaderData }: { loaderData: Activity[] }) {
             pageSizeOptions={[10, 20, 50]}
             disableColumnResize
             density="compact"
+            sx={{
+              "&.MuiDataGrid-root .MuiDataGrid-row:hover": {
+                cursor: "pointer",
+              },
+            }}
           />
         </Paper>
       </Box>

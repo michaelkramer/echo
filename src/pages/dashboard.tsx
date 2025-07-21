@@ -1,10 +1,18 @@
 // import { Outlet } from "react-router";
 import { Box, Container, Paper } from "@mui/material";
+import { useEffect } from "react";
 import { useAuth } from "../components/auth/useAuth";
 import { Logout } from "../components/logout/logout";
 
 export default function Dashboard() {
   const { authUser } = useAuth();
+
+  useEffect(() => {
+    document.title = "Dashboard";
+    fetch("/api/userEngagement").then((res) => {
+      console.log("test", res.json());
+    });
+  }, []);
 
   if (!authUser) {
     return (

@@ -38,6 +38,7 @@ import {
   updateUser,
 } from "../../services/users.service";
 import { SliderEntry } from "../../types/SliderEntry";
+import { ResponseType } from "../../types/response-type";
 import { Route } from "../../types/root";
 
 interface JournalEntry {
@@ -60,18 +61,19 @@ export async function clientLoader({
 }: {
   params: { userId: string };
 }): Promise<UserData> {
+  const userGroup = await getUserGroup(params.userId);
   return {
     user: await getUser(params.userId),
     journalEntires: await getJournalEntiresByUserId(params.userId),
     sliderEntires: await getSliderEntiresByUserId(params.userId),
-    userGroup: await getUsersById(await getUserGroup(params.userId)),
+    userGroup: userGroup.length > 0 ? await getUsersById(userGroup) : [],
   };
 }
 
 export async function clientAction({
   params,
   request,
-}: Route.ClientActionArgs) {
+}: Route.ClientActionArgs): Promise<ResponseType> {
   const formData = await request.formData();
   try {
     const formEntries = Object.fromEntries(formData.entries() as any);
@@ -92,7 +94,7 @@ export async function clientAction({
 
 export default function component({ loaderData }: { loaderData: UserData }) {
   const { user, journalEntires, sliderEntires, userGroup } = loaderData;
-  const actionData = useActionData();
+  const actionData = useActionData<ResponseType>();
   const { enqueueSnackbar } = useSnackbar();
   const { isSuperAdmin, isAdmin, isClinician } = useAuth();
   const submit = useSubmit();
@@ -213,7 +215,7 @@ export default function component({ loaderData }: { loaderData: UserData }) {
                 <Grid container spacing={2} sx={{ mb: 2 }}>
                   <Grid size="grow">
                     <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-                      Clients
+                      Cohort
                     </Typography>
                   </Grid>
                   <Grid sx={{ display: "flex", justifyContent: "flex-end" }}>

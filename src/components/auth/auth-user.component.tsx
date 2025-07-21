@@ -11,7 +11,7 @@ export function AuthUser() {
       <Avatar
         sizes="small"
         alt={display_name || "User Name"}
-        src="/static/images/avatar/7.jpg"
+        // src="/static/images/avatar/7.jpg"
         sx={{ width: 36, height: 36 }}
       />
       <Box sx={{ mr: "auto", overflowX: "hidden" }}>

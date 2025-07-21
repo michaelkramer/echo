@@ -1,4 +1,4 @@
-const PREFIX = "/echo";
+const PREFIX = "";
 
 export const ROUTES = {
   HOME: `${PREFIX}/`,

@@ -8,13 +8,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { Form } from "react-router";
+import { useSnackbar } from "notistack";
+import React, { useEffect } from "react";
+import { Form, useActionData } from "react-router";
 import {
   Activity,
   getActivity,
   updateActivity,
 } from "../../services/activities.service";
+import { ResponseType } from "../../types/response-type";
 import { Route } from "../../types/root";
 
 export async function clientLoader({
@@ -29,7 +31,7 @@ export async function clientLoader({
 export async function clientAction({
   request,
   params,
-}: Route.ClientActionArgs) {
+}: Route.ClientActionArgs): Promise<ResponseType | undefined> {
   const { activityId } = params;
   if (activityId) {
     const formData = await request.formData();
@@ -44,15 +46,10 @@ export async function clientAction({
   }
 }
 
-export default function Component({
-  loaderData,
-  actionData,
-}: {
-  loaderData: Activity;
-  actionData: string;
-}) {
+export default function Component({ loaderData }: { loaderData: Activity }) {
   const [data, setData] = React.useState<Activity>(loaderData);
-
+  const actionData = useActionData<ResponseType>();
+  const { enqueueSnackbar } = useSnackbar();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setData((prevData) => ({
@@ -60,6 +57,16 @@ export default function Component({
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    if (actionData) {
+      if (actionData.success) {
+        enqueueSnackbar(actionData.message, { variant: "success" });
+      } else {
+        enqueueSnackbar(actionData.message, { variant: "error" });
+      }
+    }
+  }, [actionData, enqueueSnackbar]);
 
   return (
     <Container>
@@ -74,7 +81,7 @@ export default function Component({
           }}
         >
           <Typography variant="h5" component="div" sx={{ mb: 2 }}>
-            Activity {actionData}
+            Activity
           </Typography>
           <Form method="post">
             <Grid
