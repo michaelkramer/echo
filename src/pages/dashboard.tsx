@@ -1,17 +1,35 @@
 // import { Outlet } from "react-router";
 import { Box, Container, Paper } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useAuth } from "../components/auth/useAuth";
 import { Logout } from "../components/logout/logout";
 
-export default function Dashboard() {
+export async function clientLoader(): Promise<any> {
+  const data = await (await fetch("/api/userEngagement")).json();
+
+  return data.map((item: any, index: number) => ({
+    id: index,
+    screen: item.screen,
+    durationSeconds: item.durationSeconds,
+  }));
+}
+
+export default function Dashboard({ loaderData }: { loaderData: any }) {
   const { authUser } = useAuth();
+  // const [userEngagement, setUserEngagement] = useState<any>([]);
+
+  const columns = [
+    { field: "id", headerName: "Id", width: 90 },
+    { field: "screen", headerName: "Screen", width: 200 },
+    { field: "durationSeconds", headerName: "Duration", flex: 1 },
+  ];
 
   useEffect(() => {
     document.title = "Dashboard";
-    fetch("/api/userEngagement").then((res) => {
-      console.log("test", res.json());
-    });
+    // fetch("/api/userEngagement").then((res) => {
+    //   setUserEngagement(res.json());
+    // });
   }, []);
 
   if (!authUser) {
@@ -22,7 +40,6 @@ export default function Dashboard() {
       </div>
     );
   }
-  // console.log("env", import.meta.env);
   return (
     <Container>
       <Box sx={{ mt: 2 }}>
@@ -40,6 +57,16 @@ export default function Dashboard() {
               <div>Display Name: {authUser.display_name}</div>
             </div>
             <div className="text-xl font-semibold mt-4">Dashboard</div>
+            <div>
+              <div className="text-sm text-gray-600">
+                User Engagement: {loaderData.length} items
+              </div>
+              <DataGrid
+                rows={loaderData}
+                columns={columns}
+                density="compact"
+              ></DataGrid>
+            </div>
             <Logout />
           </div>
         </Paper>
