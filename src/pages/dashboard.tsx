@@ -7,16 +7,18 @@ import { useAuth } from "../components/auth/useAuth";
 import { Logout } from "../components/logout/logout";
 
 export async function clientLoader(): Promise<any> {
-  const data = await (await fetch("/api/userEngagement")).json();
+  //const data = await (await fetch("/api/userEngagement")).json();
 
-  const report = await (await fetch("/api/aggregateData")).json();
+  const report = await (
+    await fetch("http://localhost:3000/api/aggregateReport")
+  ).json();
 
   return {
-    userEngagement: data.map((item: any, index: number) => ({
-      id: index,
-      screen: item.screen,
-      durationSeconds: item.durationSeconds,
-    })),
+    // userEngagement: data.map((item: any, index: number) => ({
+    //   id: index,
+    //   screen: item.screen,
+    //   durationSeconds: item.durationSeconds,
+    // })),
     aggregateReport: report.reports.map((item: any, index: number) => ({
       id: index,
       label: item.label,
@@ -71,12 +73,29 @@ export default function Dashboard({ loaderData }: { loaderData: any }) {
             {loaderData.aggregateReport.map((report: any, index: number) => (
               <LineChart
                 key={index}
-                series={[{ data: report.data }]}
+                xAxis={[
+                  {
+                    dataKey: "x",
+                  },
+                ]}
+                yAxis={[
+                  {
+                    dataKey: "y",
+                  },
+                ]}
+                series={[
+                  {
+                    data: report.data.map((d) => d.y),
+                    type: "line",
+                    label: report.label,
+                  },
+                ]}
+                dataset={report.data}
                 height={300}
               />
             ))}
 
-            <div>
+            {/* <div>
               <div className="text-sm text-gray-600">
                 User Engagement: {loaderData.userEngagement.length} items
               </div>
@@ -85,7 +104,7 @@ export default function Dashboard({ loaderData }: { loaderData: any }) {
                 columns={columns}
                 density="compact"
               ></DataGrid>
-            </div>
+            </div> */}
             <Logout />
           </div>
         </Paper>

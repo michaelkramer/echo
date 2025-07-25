@@ -70,18 +70,23 @@ export async function aggregateReport() {
       property,
       ...config,
     });
+
+    const tempData = response.rows?.map((row) => {
+      return {
+        x: config.dimensions
+          .map((_, i) => row.dimensionValues?.[i]?.value ?? "N/A")
+          .join(" | "),
+        y: config.metrics
+          .map((_, i) => row.metricValues?.[i]?.value ?? "N/A")
+          .join(", "),
+      };
+    });
+    if (tempData) {
+      tempData.sort((a, b) => a.x.localeCompare(b.x));
+    }
     data.push({
       label: config.label,
-      data: response.rows?.map((row) => {
-        return {
-          x: config.dimensions
-            .map((_, i) => row.dimensionValues?.[i]?.value ?? "N/A")
-            .join(" | "),
-          y: config.metrics
-            .map((_, i) => row.metricValues?.[i]?.value ?? "N/A")
-            .join(", "),
-        };
-      }),
+      data: tempData || [],
     });
   }
   const [weeklyActiveUsers] = await analyticsDataClient.runReport({

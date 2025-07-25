@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import cors from "cors";
 import express, { urlencoded, json } from "express";
 import swaggerUi from "swagger-ui-express";
 import analyticController from "./controllers/analytic-data";
@@ -25,6 +26,16 @@ app.use(
 );
 app.use(json());
 
+// Configure CORS to specifically allow localhost
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace 3000 with the actual port of your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+  credentials: true, // Allow sending cookies/authentication headers
+};
+
+app.use(cors(corsOptions));
+
 const port = env.PORT || 3000;
 
 // [START routes]
@@ -35,10 +46,10 @@ console.log("API routes initialized.");
 app.get("/api", async (_req: any, res: any) => {
   res.send("Hello, this is a test response from the root endpoint.");
 });
-// if (process.env.NODE_ENV === "development") {
-// Serve Swagger UI
-app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
-// }
+if (process.env.NODE_ENV === "development") {
+  // Serve Swagger UI
+  app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
+}
 // [END routes]
 
 app.listen(port, () => {
