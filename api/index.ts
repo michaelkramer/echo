@@ -35,10 +35,10 @@ console.log("API routes initialized.");
 app.get("/api", async (_req: any, res: any) => {
   res.send("Hello, this is a test response from the root endpoint.");
 });
-if (process.env.NODE_ENV === "development") {
-  // Serve Swagger UI
-  app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
-}
+// if (process.env.NODE_ENV === "development") {
+// Serve Swagger UI
+app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
+// }
 // [END routes]
 
 app.listen(port, () => {

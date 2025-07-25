@@ -31,6 +31,16 @@
         }
       }
     },
+    "/aggregateReport": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/ping": {
       "get": {
         "description": "",

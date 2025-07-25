@@ -1,5 +1,6 @@
 // import { Outlet } from "react-router";
 import { Box, Container, Paper } from "@mui/material";
+import { LineChart } from "@mui/x-charts";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useAuth } from "../components/auth/useAuth";
@@ -8,11 +9,21 @@ import { Logout } from "../components/logout/logout";
 export async function clientLoader(): Promise<any> {
   const data = await (await fetch("/api/userEngagement")).json();
 
-  return data.map((item: any, index: number) => ({
-    id: index,
-    screen: item.screen,
-    durationSeconds: item.durationSeconds,
-  }));
+  const report = await (await fetch("/api/aggregateData")).json();
+
+  return {
+    userEngagement: data.map((item: any, index: number) => ({
+      id: index,
+      screen: item.screen,
+      durationSeconds: item.durationSeconds,
+    })),
+    aggregateReport: report.reports.map((item: any, index: number) => ({
+      id: index,
+      label: item.label,
+      data: item.data,
+    })),
+    churn: report.churn,
+  };
 }
 
 export default function Dashboard({ loaderData }: { loaderData: any }) {
@@ -57,12 +68,20 @@ export default function Dashboard({ loaderData }: { loaderData: any }) {
               <div>Display Name: {authUser.display_name}</div>
             </div>
             <div className="text-xl font-semibold mt-4">Dashboard</div>
+            {loaderData.aggregateReport.map((report: any, index: number) => (
+              <LineChart
+                key={index}
+                series={[{ data: report.data }]}
+                height={300}
+              />
+            ))}
+
             <div>
               <div className="text-sm text-gray-600">
-                User Engagement: {loaderData.length} items
+                User Engagement: {loaderData.userEngagement.length} items
               </div>
               <DataGrid
-                rows={loaderData}
+                rows={loaderData.userEngagement}
                 columns={columns}
                 density="compact"
               ></DataGrid>
