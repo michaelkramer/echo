@@ -9,9 +9,7 @@ import { Logout } from "../components/logout/logout";
 export async function clientLoader(): Promise<any> {
   //const data = await (await fetch("/api/userEngagement")).json();
 
-  const report = await (
-    await fetch("http://localhost:3000/api/aggregateReport")
-  ).json();
+  const report = await (await fetch("/api/aggregateReport")).json();
 
   return {
     // userEngagement: data.map((item: any, index: number) => ({
