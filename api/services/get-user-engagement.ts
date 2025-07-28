@@ -1,9 +1,12 @@
-import env from "../env";
 import { analyticsDataClient } from "../config/analytics-data-client";
+import env from "../env";
 
 const propertyId = env.PROPERTY_ID; // Use environment variable or default value
 
-export async function getUserEngagementByScreen(startDate: string = "180daysAgo", endDate: string = "today"): Promise<{ screen: string; durationSeconds: string }[] | undefined> {
+export async function getUserEngagementByScreen(
+  startDate: string = "180daysAgo",
+  endDate: string = "today",
+): Promise<{ screen: string; durationSeconds: string }[] | undefined> {
   const [response] = await analyticsDataClient.runReport({
     property: `properties/${propertyId}`,
     dateRanges: [{ startDate, endDate }],

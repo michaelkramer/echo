@@ -47,6 +47,13 @@ server.get("/sessionByScreen", async (_req: Request, res: Response) => {
  * /aggregateReport:
  *   get:
  *     summary:
+ *     parameters:
+ *      in: query
+ *      name: userId
+ *      required: false
+ *      schema:
+ *        type: string
+ *      description: The user ID to filter the report by
  *     responses:
  *       200:
  *         description: .
@@ -56,7 +63,8 @@ server.get("/sessionByScreen", async (_req: Request, res: Response) => {
  *         type: array
  */
 server.get("/aggregateReport", async (_req: Request, res: Response) => {
-  const data = await aggregateReport();
+  const userId = _req.query.userId as string | undefined;
+  const data = await aggregateReport(userId);
   res.status(200).send(data);
 });
 

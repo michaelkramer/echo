@@ -1,10 +1,10 @@
 // import { Outlet } from "react-router";
 import { Box, Container, Paper } from "@mui/material";
 import { LineChart } from "@mui/x-charts";
-import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useAuth } from "../components/auth/useAuth";
 import { Logout } from "../components/logout/logout";
+import { formatUSDate } from "../utilities/formatUsDate";
 
 export async function clientLoader(): Promise<any> {
   //const data = await (await fetch("/api/userEngagement")).json();
@@ -30,11 +30,11 @@ export default function Dashboard({ loaderData }: { loaderData: any }) {
   const { authUser } = useAuth();
   // const [userEngagement, setUserEngagement] = useState<any>([]);
 
-  const columns = [
-    { field: "id", headerName: "Id", width: 90 },
-    { field: "screen", headerName: "Screen", width: 200 },
-    { field: "durationSeconds", headerName: "Duration", flex: 1 },
-  ];
+  // const columns = [
+  //   { field: "id", headerName: "Id", width: 90 },
+  //   { field: "screen", headerName: "Screen", width: 200 },
+  //   { field: "durationSeconds", headerName: "Duration", flex: 1 },
+  // ];
 
   useEffect(() => {
     document.title = "Dashboard";
@@ -74,6 +74,9 @@ export default function Dashboard({ loaderData }: { loaderData: any }) {
                 xAxis={[
                   {
                     dataKey: "x",
+                    scaleType: "point",
+                    valueFormatter: (value: number) =>
+                      formatUSDate(value.toString()),
                   },
                 ]}
                 yAxis={[

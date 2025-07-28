@@ -3,8 +3,36 @@ import env from "../env";
 
 const propertyId = env.PROPERTY_ID; // Use environment variable or default value
 
-export async function aggregateReport() {
+export async function aggregateReport(userId?: string) {
   const property = `properties/${propertyId}`;
+
+  // let dimensionFilter: {
+  //   filter: {
+  //     fieldName: string;
+  //     stringFilter: {
+  //       value: string;
+  //     };
+  //   };
+  // } | null = null;
+  // if (userId) {
+  //   dimensionFilter = {
+  //     filter: {
+  //       fieldName: "userId",
+  //       stringFilter: {
+  //         value: userId,
+  //       },
+  //     },
+  //   };
+  // }
+
+  // const dimensionFilter = {
+  //   filter: {
+  //     fieldName: "client_id",
+  //     stringFilter: {
+  //       value: userId,
+  //     },
+  //   },
+  // };
 
   const reports = [
     {
@@ -69,7 +97,7 @@ export async function aggregateReport() {
     const [response] = await analyticsDataClient.runReport({
       property,
       ...config,
-    });
+    } as unknown as any);
 
     const tempData = response.rows?.map((row) => {
       return {
@@ -115,6 +143,7 @@ export async function aggregateReport() {
   }
 
   return {
+    userId,
     reports: data,
     churn,
   };
