@@ -9,7 +9,8 @@
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
     "preview": "eact-router preview",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "apiBuild": "tsc --project ./tsconfig.api.json"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

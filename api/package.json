@@ -4,7 +4,8 @@
   "description": "ECHO - Enhancing Care and Health Outcomes",
   "scripts": {
     "dev": "ts-node index.ts",
-    "swagger": "ts-node swagger.ts"
+    "swagger": "ts-node swagger.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@google-analytics/data": "^5.1.0",
