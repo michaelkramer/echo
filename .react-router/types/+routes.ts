@@ -45,17 +45,12 @@ type Pages = {
       "userId": string;
     };
   };
-  "/*": {
-    params: {
-      "*": string;
-    };
-  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/dashboard" | "/activities" | "/activities/:activityId" | "/users" | "/users/:userId" | "/users/create" | "/users/group/:userId" | "/users/group/:userId/assign" | "/*";
+    page: "/" | "/dashboard" | "/activities" | "/activities/:activityId" | "/users" | "/users/:userId" | "/users/create" | "/users/group/:userId" | "/users/group/:userId/assign";
   };
   "./layout/global-layout.tsx": {
     id: "layout/global-layout";
@@ -100,9 +95,5 @@ type RouteFiles = {
   "./pages/users/group-assign.component.tsx": {
     id: "pages/users/group-assign.component";
     page: "/users/group/:userId/assign";
-  };
-  "catchall.tsx": {
-    id: "catchall";
-    page: "/" | "/*";
   };
 };

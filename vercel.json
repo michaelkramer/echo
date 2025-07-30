@@ -9,10 +9,5 @@
           "source": "/(.*)",
           "destination": "/api"
         }
-      ],
-      "functions": {
-        "api/index.ts": {
-          "includeFiles": "api/*.json"
-        }
-      }
+      ]
     }
