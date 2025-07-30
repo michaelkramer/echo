@@ -124,6 +124,7 @@
     "**/*.test.ts",
     "**/*.mjs",
     "**/*.json",
-    "hold"
+    "hold",
+    "tsconfig.json"
   ]
 }
