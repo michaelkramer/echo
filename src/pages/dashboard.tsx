@@ -8,22 +8,21 @@ import { formatUSDate } from "../utilities/formatUsDate";
 
 export async function clientLoader(): Promise<any> {
   //const data = await (await fetch("/api/userEngagement")).json();
-
-  const report = await (await fetch("/api/aggregateReport")).json();
-
-  return {
-    // userEngagement: data.map((item: any, index: number) => ({
-    //   id: index,
-    //   screen: item.screen,
-    //   durationSeconds: item.durationSeconds,
-    // })),
-    aggregateReport: report.reports.map((item: any, index: number) => ({
-      id: index,
-      label: item.label,
-      data: item.data,
-    })),
-    churn: report.churn,
-  };
+  //const report = await (await fetch("/api/aggregateReport")).json();
+  // return {
+  //   // userEngagement: data.map((item: any, index: number) => ({
+  //   //   id: index,
+  //   //   screen: item.screen,
+  //   //   durationSeconds: item.durationSeconds,
+  //   // })),
+  //   aggregateReport: report.reports.map((item: any, index: number) => ({
+  //     id: index,
+  //     label: item.label,
+  //     data: item.data,
+  //   })),
+  //   churn: report.churn,
+  // };
+  return { aggregateReport: [] };
 }
 
 export default function Dashboard({ loaderData }: { loaderData: any }) {

@@ -4,8 +4,10 @@
   "description": "ECHO - Enhancing Care and Health Outcomes",
   "scripts": {
     "dev": "ts-node index.ts",
-    "swagger": "ts-node swagger.ts",
-    "build": "tsc"
+    "build": "tsc --project ./tsconfig.api.json",
+    "lint": "eslint .",
+    "lintfix": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@google-analytics/data": "^5.1.0",

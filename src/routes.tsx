@@ -4,6 +4,7 @@ import {
   index,
   layout,
   prefix,
+  // eslint-disable-next-line import/no-unresolved
 } from "@react-router/dev/routes";
 
 export default [

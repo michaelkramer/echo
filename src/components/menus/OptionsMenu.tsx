@@ -20,6 +20,7 @@ const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function OptionsMenu(_props: { uid: string }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

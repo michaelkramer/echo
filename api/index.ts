@@ -1,19 +1,19 @@
-import fs from "fs";
-import path from "path";
+// import fs from "fs";
+// import path from "path";
 import express, { urlencoded, json } from "express";
-import swaggerUi from "swagger-ui-express";
+// import swaggerUi from "swagger-ui-express";
 import analyticController from "./controllers/analytic-data";
 import pingController from "./controllers/ping";
 import env from "./env";
 export const app = express();
 
-export function swaggerDocument() {
-  const file = fs.readFileSync(
-    path.join(__dirname, "../public/swagger-output.json"),
-    "utf8",
-  );
-  return JSON.parse(file);
-}
+// export function swaggerDocument() {
+//   const file = fs.readFileSync(
+//     path.join(__dirname, "../public/swagger-output.json"),
+//     "utf8",
+//   );
+//   return JSON.parse(file);
+// }
 
 console.log("Starting Echo API server...");
 
@@ -45,10 +45,10 @@ console.log("API routes initialized.");
 app.get("/api", async (_req: any, res: any) => {
   res.send("Hello, this is a test response from the root endpoint.");
 });
-if (process.env.NODE_ENV === "development") {
-  // Serve Swagger UI
-  app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
-}
+// if (process.env.NODE_ENV === "development") {
+//   // Serve Swagger UI
+//   app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
+// }
 // [END routes]
 
 app.listen(port, () => {

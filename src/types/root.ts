@@ -16,6 +16,7 @@ export type Info = {
   actionData: T.CreateActionData<Module>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Route {
   export type LinkDescriptors = T.LinkDescriptors;
   export type LinksFunction = () => LinkDescriptors;

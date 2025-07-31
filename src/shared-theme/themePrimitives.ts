@@ -19,7 +19,8 @@ declare module "@mui/material/styles" {
     900: string;
   }
 
-  interface PaletteColor extends ColorRange {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface PaletteColor extends ColorRange { }
 
   interface Palette {
     baseShadow: string;
